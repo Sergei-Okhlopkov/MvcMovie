@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -12,14 +13,26 @@ namespace MvcMovie.Controllers
         private MovieDBContext db = new MovieDBContext();
 
         // GET: Movies
-        public ActionResult Index(string searchString)
+        public ActionResult Index(string movieGenre,string searchString)
         {
+            var GenreList = new List<string>();
+
+            var GenreQry = from d in db.Movies orderby d.Genre select d.Genre;
+
+            GenreList.AddRange(GenreQry.Distinct());
+            ViewBag.movieGenre = new SelectList(GenreList);
+
             var movies = from m in db.Movies
                          select m;
 
             if (!String.IsNullOrEmpty(searchString))
             {
                 movies = movies.Where(s => s.Title.Contains(searchString));
+            }
+
+            if (!String.IsNullOrEmpty(movieGenre))
+            {
+                movies = movies.Where(x => x.Genre == movieGenre);
             }
 
             return View(movies);

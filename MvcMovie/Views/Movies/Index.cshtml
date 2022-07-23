@@ -12,9 +12,10 @@
     @using (Html.BeginForm("Index", "Movies", FormMethod.Get))
     {
 <p>
-        Title: @Html.TextBox("SearchString") <br />
-        <input type="submit" value="Поиск" />
-    </p>
+    Genre: @Html.DropDownList("movieGenre", "Любой жанр")
+    Title: @Html.TextBox("SearchString") <br />
+    <input type="submit" value="Поиск" />
+</p>
 }
     </p>
     <table class="table">
